@@ -9,7 +9,7 @@ import pytest
 import xarray as xr
 from PIL import Image
 
-from xmovie.core import (
+from xanimations.core import (
     Movie,
     _check_ffmpeg_execute,
     _check_plotfunc_output,
@@ -20,7 +20,7 @@ from xmovie.core import (
     convert_gif,
     save_single_frame,
 )
-from xmovie.presets import basic, rotating_globe
+from xanimations.presets import basic, rotating_globe
 
 
 def test_parse_plot_defaults():

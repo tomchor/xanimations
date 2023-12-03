@@ -255,7 +255,7 @@ class Movie:
             Function to plot a single frame, with
             :ref:`the same signature as the presets <api:Presets>`.
 
-            Default: :func:`~xmovie.presets.basic`.
+            Default: :func:`~xanimations.presets.basic`.
         framedim : str
             Dimension name along which frames will be generated.
         pixelwidth, pixelheight : int
@@ -292,7 +292,7 @@ class Movie:
         if input_check:
             if isinstance(self.data, xr.Dataset):
                 raise ValueError(
-                    "xmovie presets do not yet fully support the input of xr.Datasets.\nIn order to use datasets as inputs, set `input_check` to False.\nNote that this requires you to manually set colorlimits etc."
+                    "xanimations presets do not yet fully support the input of xr.Datasets.\nIn order to use datasets as inputs, set `input_check` to False.\nNote that this requires you to manually set colorlimits etc."
                 )
 
             # Set defaults
@@ -328,7 +328,7 @@ class Movie:
         # create_frame(self.pixelwidth, self.pixelheight, self.dpi)
         # produce dummy output for ax and pp if the plotfunc does not provide them
         if self.plotfunc_n_outargs == 2:
-            # this should be the case for all presets provided by xmovie
+            # this should be the case for all presets provided by xanimations
             ax, pp = self.plotfunc(self.data, fig, timestep, self.framedim, **self.kwargs)
         else:
             warnings.warn(
