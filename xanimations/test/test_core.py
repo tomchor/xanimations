@@ -20,7 +20,7 @@ from xanimations.core import (
     convert_gif,
     save_single_frame,
 )
-from xanimations.presets import basic, rotating_globe
+from xanimations.presets import basic
 
 
 def test_parse_plot_defaults():
@@ -216,7 +216,7 @@ def test_convert_gif(tmpdir, moviename, remove_movie, gif_palette, gifname, gif_
 # combine them and also add str specs like 'HD' '1080' '4k'
 @pytest.mark.parametrize("framedim", ["time", "x"])
 @pytest.mark.parametrize("dpi", [50, 200])
-@pytest.mark.parametrize("plotfunc", [None, rotating_globe, dummy_plotfunc])
+@pytest.mark.parametrize("plotfunc", [None, dummy_plotfunc])
 def test_Movie(plotfunc, framedim, frame_pattern, dpi, pixelheight, pixelwidth):
     da = test_dataarray()
     kwargs = dict(

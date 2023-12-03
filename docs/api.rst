@@ -28,5 +28,4 @@ They have a signature of the type:
 .. autosummary::
    :toctree: api/
 
-   rotating_globe
    ~xanimations.presets.basic
