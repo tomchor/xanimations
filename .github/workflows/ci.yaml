@@ -16,7 +16,7 @@ concurrency:
 jobs:
   build:
     name: Build (${{ matrix.python-version }} | ${{ matrix.os }})
-    if: github.repository == 'jbusecke/xmovie'
+    if: github.repository == 'tomchor/xanimations'
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     defaults:
@@ -58,7 +58,7 @@ jobs:
 
   core-deps-dev:
     name: Build (core-dependencies)
-    if: github.repository == 'jbusecke/xmovie'
+    if: github.repository == 'tomchor/xanimations'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     defaults:
