@@ -7,7 +7,6 @@ import xarray as xr
 from xanimations.presets import (
     _check_input,
     _core_plot,
-    _smooth_boundary_NearsidePerspective,
 )
 
 
