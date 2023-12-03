@@ -1,4 +1,4 @@
-xmovie: movies from `xarray`_ objects
+xanimations: movies from `xarray`_ objects
 =====================================
 
 .. toctree::
@@ -9,7 +9,7 @@ xmovie: movies from `xarray`_ objects
    examples
    api
    whats-new
-   GitHub repository <https://github.com/jbusecke/xmovie>
+   GitHub repository <https://github.com/jbusecke/xanimations>
 
 
 *A simple way of creating beautiful movies from xarray objects.*
@@ -57,17 +57,17 @@ Installation
 
 .. note::
 
-   For now, ``dask(-core)`` and ``cartopy`` are included with ``xmovie``,
+   For now, ``dask(-core)`` and ``cartopy`` are included with ``xanimations``,
    but they may be optional dependencies in the future.
 
 Conda
 ~~~~~
 
-The easiest way to install ``xmovie`` is via ``conda``:
+The easiest way to install ``xanimations`` is via ``conda``:
 
 .. prompt:: bash
 
-   conda install -c conda-forge xmovie
+   conda install -c conda-forge xanimations
 
 Pip
 ~~~
@@ -76,7 +76,7 @@ You can also install via ``pip``:
 
 .. prompt:: bash
 
-   pip install xmovie
+   pip install xanimations
 
 Latest
 ~~~~~~
@@ -85,7 +85,7 @@ If you want to install the latest version from GitHub, simply run
 
 .. prompt:: bash
 
-   pip install git+https://github.com/jbusecke/xmovie.git
+   pip install git+https://github.com/jbusecke/xanimations.git
 
 .. note::
 
@@ -95,7 +95,7 @@ If you want to install the latest version from GitHub, simply run
 
    .. prompt:: bash
 
-      git clone https://github.com/jbusecke/xmovie.git`
+      git clone https://github.com/jbusecke/xanimations.git`
 
    and enter your github password.
 

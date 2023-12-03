@@ -1,9 +1,9 @@
-.. currentmodule:: xmovie
+.. currentmodule:: xanimations
 
 API Reference
 =============
 
-:class:`~xmovie.Movie` class
+:class:`~xanimations.Movie` class
 ----------------------------
 
 
@@ -15,7 +15,7 @@ API Reference
 Presets
 -------
 
-Plot functions that can be supplied to the :class:`~xmovie.Movie` constructor
+Plot functions that can be supplied to the :class:`~xanimations.Movie` constructor
 as the second positional argument.
 
 They have a signature of the type:
@@ -29,4 +29,4 @@ They have a signature of the type:
    :toctree: api/
 
    rotating_globe
-   ~xmovie.presets.basic
+   ~xanimations.presets.basic

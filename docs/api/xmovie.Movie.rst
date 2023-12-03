@@ -1,7 +1,7 @@
-﻿xmovie.Movie
+﻿xanimations.Movie
 ============
 
-.. currentmodule:: xmovie
+.. currentmodule:: xanimations
 
 .. autoclass:: Movie
 

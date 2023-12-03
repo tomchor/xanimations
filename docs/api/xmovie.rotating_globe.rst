@@ -1,6 +1,6 @@
-xmovie.rotating\_globe
+xanimations.rotating\_globe
 ======================
 
-.. currentmodule:: xmovie
+.. currentmodule:: xanimations
 
 .. autofunction:: rotating_globe
