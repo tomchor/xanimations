@@ -1,6 +1,6 @@
-xmovie.presets.basic
+xanimations.presets.basic
 ====================
 
-.. currentmodule:: xmovie.presets
+.. currentmodule:: xanimations.presets
 
 .. autofunction:: basic

@@ -6,7 +6,7 @@
 
 import datetime
 
-import xmovie
+import xanimations
 
 
 # -- Path setup --------------------------------------------------------------
@@ -23,14 +23,14 @@ import xmovie
 # -- Project information -----------------------------------------------------
 
 current_year = datetime.datetime.now().year
-project = "xmovie"
-copyright = f"2018\u2013{current_year}, xmovie maintainers"
+project = "xanimations"
+copyright = f"2018\u2013{current_year}, xanimations maintainers"
 author = "Julius Busecke"
 
 # The short X.Y version
-version = ".".join(xmovie.__version__.split(".")[:2])
+version = ".".join(xanimations.__version__.split(".")[:2])
 # The full version, including alpha/beta/rc tags
-release = xmovie.__version__
+release = xanimations.__version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -96,8 +96,8 @@ autosectionlabel_prefix_document = True
 autosectionlabel_maxdepth = 2
 
 extlinks = {
-    "issue": ("https://github.com/jbusecke/xmovie/issues/%s", "GH#"),
-    "pull": ("https://github.com/jbusecke/xmovie/pull/%s", "PR#"),
+    "issue": ("https://github.com/jbusecke/xanimations/issues/%s", "GH#"),
+    "pull": ("https://github.com/jbusecke/xanimations/pull/%s", "PR#"),
 }
 
 intersphinx_mapping = {

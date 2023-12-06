@@ -16,7 +16,7 @@ concurrency:
 jobs:
   build:
     name: Build (${{ matrix.python-version }} | ${{ matrix.os }})
-    if: github.repository == 'jbusecke/xmovie'
+    if: github.repository == 'tomchor/xanimations'
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     defaults:
@@ -26,7 +26,7 @@ jobs:
       fail-fast: false
       matrix:
         os: ["ubuntu-latest", "macos-latest"]
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
 
 
     steps:
@@ -48,7 +48,7 @@ jobs:
         run: |
           pytest --cov=./ --cov-report=xml
       - name: Upload code coverage to Codecov
-        uses: codecov/codecov-action@v3.1.1
+        uses: codecov/codecov-action@v3.1.4
         with:
           file: ./coverage.xml
           flags: unittests
@@ -58,7 +58,7 @@ jobs:
 
   core-deps-dev:
     name: Build (core-dependencies)
-    if: github.repository == 'jbusecke/xmovie'
+    if: github.repository == 'tomchor/xanimations'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     defaults:
@@ -84,3 +84,11 @@ jobs:
       - name: Run Tests
         run: |
           pytest --cov=./ --cov-report=xml
+      - name: Upload code coverage to Codecov
+        uses: codecov/codecov-action@v3.1.4
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          env_vars: OS,PYTHON
+          name: codecov-umbrella
+          fail_ci_if_error: false
