@@ -1,4 +1,4 @@
-name: xmovie-docs
+name: xanimations-docs
 channels:
   - conda-forge
   - nodefaults
@@ -25,4 +25,4 @@ dependencies:
   - pip
   - pip:
     - sphinx-prompt
-    - '-e ../'  # xmovie
+    - '-e ../'  # xanimations

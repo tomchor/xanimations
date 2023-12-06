@@ -3,7 +3,6 @@ import warnings
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import numpy as np
-import shapely.geometry as sgeom
 import xarray as xr
 
 

@@ -8,4 +8,4 @@ except ModuleNotFoundError:
     __version__ = "unknown"
 
 
-__all__ = ("Movie", "rotating_globe")
+__all__ = ("Movie",)
