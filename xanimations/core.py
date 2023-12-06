@@ -124,11 +124,11 @@ def _execute_command(command, verbose=False, error=True):
 def _check_ffmpeg_execute(command, verbose=False):
     if _check_ffmpeg_version() is None:
         raise RuntimeError(
-            "Could not find an ffmpeg version on the system. \
-        Please install ffmpeg with e.g. `conda install -c conda-forge ffmpeg`"
+            "Could not find an ffmpeg version on the system. Please install ffmpeg with e.g. `conda install -c conda-forge ffmpeg`"
         )
     else:
         try:
+            print(command)
             p = _execute_command(command, verbose=verbose)
             return p
         except RuntimeError:
@@ -137,9 +137,12 @@ def _check_ffmpeg_execute(command, verbose=False):
             )
 
 
-def _combine_ffmpeg_command(sourcefolder, moviename, framerate, frame_pattern, ffmpeg_options):
+def _combine_ffmpeg_command(
+    sourcefolder, moviename, framerate, frame_pattern, ffmpeg_options, ffmpeg_call="ffmpeg"
+):
     # we need `-y` because i can not properly diagnose the errors here...
-    command = 'ffmpeg -r %i -i "%s" -y %s -r %i "%s"' % (
+    command = '%s -r %i -i "%s" -y %s -r %i "%s"' % (
+        ffmpeg_call,
         framerate,
         os.path.join(sourcefolder, frame_pattern),
         ffmpeg_options,
@@ -194,8 +197,11 @@ def combine_frames_into_movie(
     verbose=False,
     ffmpeg_options="-c:v libx264 -preset veryslow -crf 15 -pix_fmt yuv420p",
     framerate=20,
+    ffmpeg_call="ffmpeg",
 ):
-    command = _combine_ffmpeg_command(sourcefolder, moviename, framerate, frame_pattern, ffmpeg_options)
+    command = _combine_ffmpeg_command(
+        sourcefolder, moviename, framerate, frame_pattern, ffmpeg_options, ffmpeg_call=ffmpeg_call
+    )
     p = _check_ffmpeg_execute(command, verbose=verbose)
 
     print("Movie created at %s" % (moviename))
@@ -439,6 +445,7 @@ class Movie:
         gif_palette=False,
         gif_resolution_factor=0.5,
         gif_framerate=10,
+        ffmpeg_call="ffmpeg",
     ):
         """Save out animation from Movie object.
 
@@ -481,6 +488,8 @@ class Movie:
             Factor used to reduce gif resolution compared to movie.
             Use 1.0 to put out the same resolutions for both products.
             (the default is 0.5).
+        ffmpeg_call: str
+            Call to ffmpeg. Default is ``"ffmpeg"``.
 
             .. note::
                Currently unused
@@ -534,6 +543,7 @@ class Movie:
             verbose=verbose,
             framerate=framerate,
             ffmpeg_options=ffmpeg_options,
+            ffmpeg_call=ffmpeg_call,
         )
 
         # Create gif
