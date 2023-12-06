@@ -1,23 +1,24 @@
 import matplotlib as mpl
 
 mpl.use("Agg")
-import re
-import os
-import sys
-import glob
-import warnings
 import gc
+import glob
+import os
+import re
+import sys
+import warnings
+from subprocess import PIPE, STDOUT, Popen
+
+import matplotlib.pyplot as plt
 import xarray as xr
 
-from .presets import _check_input, basic
-from subprocess import Popen, PIPE, STDOUT
-import matplotlib.pyplot as plt
+from .presets import basic
 
 try:
     from tqdm.auto import tqdm
 
     tqdm_avail = True
-except:
+except Exception:
     warnings.warn(
         "Optional dependency `tqdm` not found. This will make progressbars a lot nicer. \
     Install with `conda install -c conda-forge tqdm`"
@@ -27,7 +28,6 @@ except:
 # import xarray as xr
 # import dask.bag as db
 import dask.array as dsa
-
 
 # is it a good idea to set these here?
 # Needs to be dependent on dpi and videosize
@@ -92,11 +92,7 @@ def _check_ffmpeg_version():
     else:
         # parse version number
         try:
-            found = (
-                re.search("ffmpeg version (.+?) Copyright", str(output))
-                .group(1)
-                .replace(" ", "")
-            )
+            found = re.search("ffmpeg version (.+?) Copyright", str(output)).group(1).replace(" ", "")
             return found
         except AttributeError:
             # ffmpeg version, Copyright not found in the original string
@@ -128,11 +124,11 @@ def _execute_command(command, verbose=False, error=True):
 def _check_ffmpeg_execute(command, verbose=False):
     if _check_ffmpeg_version() is None:
         raise RuntimeError(
-            "Could not find an ffmpeg version on the system. \
-        Please install ffmpeg with e.g. `conda install -c conda-forge ffmpeg`"
+            "Could not find an ffmpeg version on the system. Please install ffmpeg with e.g. `conda install -c conda-forge ffmpeg`"
         )
     else:
         try:
+            print(command)
             p = _execute_command(command, verbose=verbose)
             return p
         except RuntimeError:
@@ -142,10 +138,11 @@ def _check_ffmpeg_execute(command, verbose=False):
 
 
 def _combine_ffmpeg_command(
-    sourcefolder, moviename, framerate, frame_pattern, ffmpeg_options
+    sourcefolder, moviename, framerate, frame_pattern, ffmpeg_options, ffmpeg_call="ffmpeg"
 ):
     # we need `-y` because i can not properly diagnose the errors here...
-    command = 'ffmpeg -r %i -i "%s" -y %s -r %i "%s"' % (
+    command = '%s -r %i -i "%s" -y %s -r %i "%s"' % (
+        ffmpeg_call,
         framerate,
         os.path.join(sourcefolder, frame_pattern),
         ffmpeg_options,
@@ -170,11 +167,8 @@ def convert_gif(
     remove_movie=True,
     gif_framerate=5,
 ):
-
     if gif_palette:
-        palette_filter = (
-            '-filter_complex "[0:v] split [a][b];[a] palettegen [p];[b][p] paletteuse"'
-        )
+        palette_filter = '-filter_complex "[0:v] split [a][b];[a] palettegen [p];[b][p] paletteuse"'
     else:
         palette_filter = ""
 
@@ -203,10 +197,10 @@ def combine_frames_into_movie(
     verbose=False,
     ffmpeg_options="-c:v libx264 -preset veryslow -crf 15 -pix_fmt yuv420p",
     framerate=20,
+    ffmpeg_call="ffmpeg",
 ):
-
     command = _combine_ffmpeg_command(
-        sourcefolder, moviename, framerate, frame_pattern, ffmpeg_options
+        sourcefolder, moviename, framerate, frame_pattern, ffmpeg_options, ffmpeg_call=ffmpeg_call
     )
     p = _check_ffmpeg_execute(command, verbose=verbose)
 
@@ -227,7 +221,7 @@ def combine_frames_into_movie(
 
 
 def save_single_frame(fig, frame, odir=None, frame_pattern="frame_%05d.png", dpi=100):
-    """ Saves a single frame of data from an already-created figure and then closes the figure """
+    """Saves a single frame of data from an already-created figure and then closes the figure"""
     fig.savefig(
         os.path.join(odir, frame_pattern % (frame)),
         dpi=dpi,
@@ -267,7 +261,7 @@ class Movie:
             Function to plot a single frame, with
             :ref:`the same signature as the presets <api:Presets>`.
 
-            Default: :func:`~xmovie.presets.basic`.
+            Default: :func:`~xanimations.presets.basic`.
         framedim : str
             Dimension name along which frames will be generated.
         pixelwidth, pixelheight : int
@@ -304,7 +298,7 @@ class Movie:
         if input_check:
             if isinstance(self.data, xr.Dataset):
                 raise ValueError(
-                    "xmovie presets do not yet fully support the input of xr.Datasets.\nIn order to use datasets as inputs, set `input_check` to False.\nNote that this requires you to manually set colorlimits etc."
+                    "xanimations presets do not yet fully support the input of xr.Datasets.\nIn order to use datasets as inputs, set `input_check` to False.\nNote that this requires you to manually set colorlimits etc."
                 )
 
             # Set defaults
@@ -340,10 +334,8 @@ class Movie:
         # create_frame(self.pixelwidth, self.pixelheight, self.dpi)
         # produce dummy output for ax and pp if the plotfunc does not provide them
         if self.plotfunc_n_outargs == 2:
-            # this should be the case for all presets provided by xmovie
-            ax, pp = self.plotfunc(
-                self.data, fig, timestep, self.framedim, **self.kwargs
-            )
+            # this should be the case for all presets provided by xanimations
+            ax, pp = self.plotfunc(self.data, fig, timestep, self.framedim, **self.kwargs)
         else:
             warnings.warn(
                 "The provided `plotfunc` does not provide the expected number of output arguments.\
@@ -362,9 +354,7 @@ class Movie:
         timestep : int
             Timestep (frame) to preview.
         """
-        with plt.rc_context(
-            {"figure.dpi": self.dpi, "figure.figsize": [self.width, self.height]}
-        ):
+        with plt.rc_context({"figure.dpi": self.dpi, "figure.figsize": [self.width, self.height]}):
             fig, ax, pp = self.render_single_frame(timestep)
 
     def save_frames_serial(self, odir, progress=False):
@@ -386,9 +376,7 @@ class Movie:
 
         for timestep in frame_range:
             fig, ax, pp = self.render_single_frame(timestep)
-            save_single_frame(
-                fig, timestep, odir=odir, frame_pattern=self.frame_pattern, dpi=self.dpi
-            )
+            save_single_frame(fig, timestep, odir=odir, frame_pattern=self.frame_pattern, dpi=self.dpi)
 
     def save_frames_parallel(self, odir, parallel_compute_kwargs=dict()):
         """
@@ -401,9 +389,6 @@ class Movie:
         parallel_compute_kwargs : dict
             Keyword arguments to pass to Dask's :meth:`~dask.array.Array.compute`.
         """
-        import numpy as np
-        import dask.array as darray
-
         da = self.data
         framedim = self.framedim
 
@@ -418,7 +403,7 @@ class Movie:
         elif type(da) is xr.Dataset:
             framedim_chunks = da.chunks[framedim]
         else:
-            raise(TypeError("`da` must be either an xarray.DataArray or xarray.Dataset"))
+            raise TypeError("`da` must be either an xarray.DataArray or xarray.Dataset")
 
         if not all([chunk == 1 for chunk in framedim_chunks]):
             raise ValueError(
@@ -434,9 +419,7 @@ class Movie:
             )  # get index of chunk in framedim
 
             fig, ax, pp = self.render_single_frame(timestep)
-            save_single_frame(
-                fig, timestep, odir=odir, frame_pattern=self.frame_pattern, dpi=self.dpi
-            )
+            save_single_frame(fig, timestep, odir=odir, frame_pattern=self.frame_pattern, dpi=self.dpi)
 
             return time_of_chunk
 
@@ -462,6 +445,7 @@ class Movie:
         gif_palette=False,
         gif_resolution_factor=0.5,
         gif_framerate=10,
+        ffmpeg_call="ffmpeg",
     ):
         """Save out animation from Movie object.
 
@@ -504,6 +488,8 @@ class Movie:
             Factor used to reduce gif resolution compared to movie.
             Use 1.0 to put out the same resolutions for both products.
             (the default is 0.5).
+        ffmpeg_call: str
+            Call to ffmpeg. Default is ``"ffmpeg"``.
 
             .. note::
                Currently unused
@@ -532,8 +518,7 @@ class Movie:
         if os.path.exists(mpath):
             if not overwrite_existing:
                 raise RuntimeError(
-                    "File `%s` already exists. Set `overwrite_existing` to True to overwrite."
-                    % (mpath)
+                    "File `%s` already exists. Set `overwrite_existing` to True to overwrite." % (mpath)
                 )
         if isgif:
             if os.path.exists(gpath):
@@ -545,9 +530,7 @@ class Movie:
 
         # print frames
         if parallel:
-            self.save_frames_parallel(
-                dirname, parallel_compute_kwargs=parallel_compute_kwargs
-            )
+            self.save_frames_parallel(dirname, parallel_compute_kwargs=parallel_compute_kwargs)
         else:
             self.save_frames_serial(dirname, progress=progress)
 
@@ -560,6 +543,7 @@ class Movie:
             verbose=verbose,
             framerate=framerate,
             ffmpeg_options=ffmpeg_options,
+            ffmpeg_call=ffmpeg_call,
         )
 
         # Create gif

@@ -1,12 +1,13 @@
-# xmovie
-[![Build Status](https://img.shields.io/github/workflow/status/jbusecke/xmovie/CI?logo=github)](https://github.com/jbusecke/xmovie/actions)
-[![Documentation Status](https://readthedocs.org/projects/xmovie/badge/?version=latest)](https://xmovie.readthedocs.io/en/latest/)
-[![codecov %](https://codecov.io/gh/jbusecke/xmovie/branch/master/graph/badge.svg)](https://codecov.io/gh/jbusecke/xmovie)
+# xanimations
+[![Build Status](https://img.shields.io/github/workflow/status/jbusecke/xanimations/CI?logo=github)](https://github.com/jbusecke/xanimations/actions)
+[![Documentation Status](https://readthedocs.org/projects/xanimations/badge/?version=latest)](https://xanimations.readthedocs.io/en/latest/)
+[![pre-commit.ci Status](https://results.pre-commit.ci/badge/github/jbusecke/xanimations/master.svg)](https://results.pre-commit.ci/latest/github/jbusecke/xanimations/master)
+[![codecov %](https://codecov.io/gh/jbusecke/xanimations/branch/master/graph/badge.svg)](https://codecov.io/gh/jbusecke/xanimations)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![DOI](https://zenodo.org/badge/124968397.svg)](https://zenodo.org/badge/latestdoi/124968397)
-[![conda-forge package version](https://img.shields.io/conda/vn/conda-forge/xmovie)](https://anaconda.org/conda-forge/xmovie)
-[![conda-forge download count](https://img.shields.io/conda/dn/conda-forge/xmovie?label=conda-forge)](https://anaconda.org/conda-forge/xmovie)
-[![PyPI package version](https://badge.fury.io/py/xmovie.svg)](https://badge.fury.io/py/xmovie)
+[![conda-forge package version](https://img.shields.io/conda/vn/conda-forge/xanimations)](https://anaconda.org/conda-forge/xanimations)
+[![conda-forge download count](https://img.shields.io/conda/dn/conda-forge/xanimations?label=conda-forge)](https://anaconda.org/conda-forge/xanimations)
+[![PyPI package version](https://badge.fury.io/py/xanimations.svg)](https://badge.fury.io/py/xanimations)
 
 *A simple way of creating beautiful movies from [xarray](https://xarray.pydata.org) objects.*
 
@@ -39,26 +40,26 @@ The main aims of this module are:
 
 ## Installation
 
-The easiest way to install `xmovie` is via `conda`:
+The easiest way to install `xanimations` is via `conda`:
 ```
-conda install -c conda-forge xmovie
+conda install -c conda-forge xanimations
 ```
 
 You can also install via `pip`:
 ```
-pip install xmovie
+pip install xanimations
 ```
 
 ## Documentation
 
-Check out the examples and API documentation at <https://xmovie.readthedocs.io>.
+Check out the examples and API documentation at <https://xanimations.readthedocs.io>.
 
 ## Quickstart
 
 High-quality movies and gifs can be created with only a few lines
 ```python
 import xarray as xr
-from xmovie import Movie
+from xanimations import Movie
 
 ds = xr.tutorial.open_dataset('air_temperature').isel(time=slice(0,150))
 mov = Movie(ds.air)

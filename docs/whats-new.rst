@@ -1,5 +1,13 @@
 What's New
 ==========
+v0.4.0 (unreleased)
+-------------------
+
+Breaking Changes
+~~~~~~~~~~~~~~~~
+- Drop support for Python 3.7 (:pull:`139`).
+  By `Julius Busecke <https://github.com/jbusecke>`.
+
 v0.3.1
 -------------------
 
@@ -18,7 +26,7 @@ Documentation
   By `zmoon <https://github.com/zmoon>`_.
 - Add more readme badges (:pull:`72`).
   By `zmoon <https://github.com/zmoon>`_.
-  
+
 Breaking Changes
 ~~~~~~~~~~~~~~~~
 - Removed support for python 3.6 (:pull:`80`).
