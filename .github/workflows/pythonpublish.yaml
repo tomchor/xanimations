@@ -1,4 +1,4 @@
-name: Build and Upload xmovie to PyPI
+name: Build and Upload xanimations to PyPI
 on:
   release:
     types:
@@ -10,12 +10,12 @@ on:
 jobs:
   build-artifacts:
     runs-on: ubuntu-latest
-    if: github.repository == 'jbusecke/xmovie'
+    if: github.repository == 'tomchor/xanimations'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4.4.0
         name: Install Python
         with:
           python-version: 3.8
@@ -36,13 +36,13 @@ jobs:
         run: |
           python -m twine check dist/*
           pwd
-          if [ -f dist/xmovie-0.0.0.tar.gz ]; then
+          if [ -f dist/xanimations-0.0.0.tar.gz ]; then
             echo "❌ INVALID VERSION NUMBER"
             exit 1
           else
             echo "✅ Looks good"
           fi
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: releases
           path: dist
@@ -51,7 +51,7 @@ jobs:
     needs: build-artifacts
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4.4.0
         name: Install Python
         with:
           python-version: 3.8
@@ -65,7 +65,7 @@ jobs:
           ls -ltrh dist
       - name: Publish package to TestPyPI
         if: github.event_name == 'pull_request'
-        uses: pypa/gh-action-pypi-publish@v1.5.0
+        uses: pypa/gh-action-pypi-publish@v1.6.4
         with:
           user: __token__
           password: ${{ secrets.TESTPYPI_TOKEN }}
@@ -77,7 +77,7 @@ jobs:
         run: |
           sleep 3
           python -m pip install --upgrade pip
-          python -m pip install --extra-index-url https://test.pypi.org/simple --upgrade xmovie
+          python -m pip install --extra-index-url https://test.pypi.org/simple --upgrade xanimations
           python setup.py --version
   upload-to-pypi:
     needs: test-built-dist
@@ -89,7 +89,7 @@ jobs:
           name: releases
           path: dist
       - name: Publish package to PyPI
-        uses: pypa/gh-action-pypi-publish@v1.5.0
+        uses: pypa/gh-action-pypi-publish@v1.6.4
         with:
           user: __token__
           password: ${{ secrets.PYPI_TOKEN }}
