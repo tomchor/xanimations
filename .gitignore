@@ -1,4 +1,4 @@
-xmovie/_version.py
+xanimations/_version.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -71,9 +71,9 @@ target/
 **/dask-worker-space
 
 # movie and picture files
-*.png 
+*.png
 *.mov
-*.mp4 
+*.mp4
 *.gif
 !docs/examples/*.gif
 !docs/examples/*.png
